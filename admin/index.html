@@ -1,49 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sree Varahi Interiors</title>
 
-    <style>
-        body {
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f7f1e6;
-            font-family: Arial, sans-serif;
-        }
+<meta charset="UTF-8">
 
-        button {
-            padding: 15px 35px;
-            font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            background: #4b0000;
-            color: white;
-            cursor: pointer;
-        }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        button:hover {
-            background: #7a1f1f;
-        }
-    </style>
+<title>Sree Varahi Gallery Admin</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link 
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+rel="stylesheet">
+
 </head>
+
 
 <body>
 
-    <button onclick="openAdmin()">
-        Open Admin Dashboard
-    </button>
+
+<div class="dashboard">
 
 
-    <script>
-        function openAdmin() {
-            window.location.href = "admin/index.html";
-        }
-    </script>
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+
+<h2>
+<i class="fa-solid fa-images"></i>
+Gallery Admin
+</h2>
+
+
+<ul>
+
+<li class="active">
+<i class="fa-solid fa-house"></i>
+Dashboard
+</li>
+
+
+<li>
+<i class="fa-solid fa-upload"></i>
+Upload Images
+</li>
+
+
+<li>
+<i class="fa-solid fa-gear"></i>
+Settings
+</li>
+
+
+</ul>
+
+
+</aside>
+
+
+
+<!-- MAIN CONTENT -->
+
+<main class="content">
+
+
+<h1>
+Sree Varahi Interiors
+</h1>
+
+
+
+<!-- SETTINGS -->
+
+
+<section class="card">
+
+
+<h2>
+GitHub Settings
+</h2>
+
+
+<input 
+id="owner"
+placeholder="GitHub Username">
+
+
+<input 
+id="repo"
+placeholder="Repository Name">
+
+
+<input 
+id="branch"
+value="main"
+placeholder="Branch">
+
+
+<button id="saveSettings">
+
+Save Settings
+
+</button>
+
+
+<button id="githubLogin">
+
+<i class="fab fa-github"></i>
+
+Connect GitHub
+
+</button>
+
+
+</section>
+
+
+
+
+
+<!-- UPLOAD -->
+
+
+<section class="card">
+
+
+<h2>
+Upload Gallery Images
+</h2>
+
+
+
+<form id="uploadForm">
+
+
+
+<select id="projectSelect">
+
+<option value="kitchen">
+Kitchen
+</option>
+
+<option value="bedroom">
+Bedroom
+</option>
+
+<option value="hall">
+Hall
+</option>
+
+<option value="aluminum">
+Aluminum
+</option>
+
+<option value="artworks">
+Artworks
+</option>
+
+<option value="elevations">
+Elevations
+</option>
+
+<option value="false-ceiling">
+False Ceiling
+</option>
+
+<option value="flooring">
+Flooring
+</option>
+
+<option value="painting">
+Painting
+</option>
+
+<option value="steelframe">
+Steel Art
+</option>
+
+
+</select>
+
+
+
+<input 
+type="file"
+id="images"
+multiple
+accept="image/*">
+
+
+
+<div id="preview"></div>
+
+
+
+<button type="submit">
+
+Upload To GitHub
+
+</button>
+
+
+
+</form>
+
+
+</section>
+
+
+
+</main>
+
+
+</div>
+
+
+
+
+
+<script src="admin/config.js"></script>
+
+<script src="admin/script.js"></script>
+
 
 </body>
+
 </html>
