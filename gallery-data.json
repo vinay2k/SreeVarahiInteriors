@@ -1,0 +1,42 @@
+{
+  "kitchen": {
+    "name": "Kitchen",
+    "images": []
+  },
+  "bedroom": {
+    "name": "Bedroom",
+    "images": []
+  },
+  "hall": {
+    "name": "Hall",
+    "images": []
+  },
+  "aluminum": {
+    "name": "Aluminum",
+    "images": []
+  },
+  "artworks": {
+    "name": "Artworks",
+    "images": []
+  },
+  "elevations": {
+    "name": "Elevations",
+    "images": []
+  },
+  "false-ceiling": {
+    "name": "False Ceiling",
+    "images": []
+  },
+  "flooring": {
+    "name": "Flooring",
+    "images": []
+  },
+  "painting": {
+    "name": "Painting",
+    "images": []
+  },
+  "steelframe": {
+    "name": "Steel Art",
+    "images": []
+  }
+}
