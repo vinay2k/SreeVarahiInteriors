@@ -1,0 +1,267 @@
+/* =====================================
+   ADMIN DASHBOARD STYLE
+===================================== */
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+
+body{
+
+    background:#f7f1e6;
+
+    color:#3a0f1a;
+
+}
+
+
+
+/* MAIN LAYOUT */
+
+.dashboard{
+
+    display:flex;
+
+    min-height:100vh;
+
+}
+
+
+
+/* SIDEBAR */
+
+.sidebar{
+
+    width:260px;
+
+    background:#3a0f1a;
+
+    color:white;
+
+    padding:30px 20px;
+
+}
+
+
+
+.sidebar h2{
+
+    text-align:center;
+
+    margin-bottom:40px;
+
+    color:#e8d5a8;
+
+}
+
+
+
+.sidebar ul{
+
+    list-style:none;
+
+}
+
+
+
+.sidebar li{
+
+    padding:15px;
+
+    margin-bottom:10px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+
+.sidebar li:hover,
+.sidebar .active{
+
+    background:#6b2331;
+
+}
+
+
+
+/* CONTENT */
+
+.content{
+
+    flex:1;
+
+    padding:40px;
+
+}
+
+
+
+.content h1{
+
+    margin-bottom:30px;
+
+    color:#4a1420;
+
+}
+
+
+
+
+
+/* CARD */
+
+.card{
+
+    background:white;
+
+    padding:30px;
+
+    margin-bottom:25px;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.12);
+
+}
+
+
+
+.card h2{
+
+    margin-bottom:20px;
+
+    color:#4a1420;
+
+}
+
+
+
+
+/* INPUTS */
+
+input,
+select{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-bottom:15px;
+
+    border:1px solid #ddd;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+}
+
+
+
+
+/* BUTTON */
+
+button{
+
+    background:#4a1420;
+
+    color:white;
+
+    border:none;
+
+    padding:14px 25px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    margin-right:10px;
+
+    transition:.3s;
+
+}
+
+
+
+button:hover{
+
+    background:#6b2331;
+
+}
+
+
+
+
+
+/* IMAGE PREVIEW */
+
+#preview{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+    margin:20px 0;
+
+}
+
+
+
+#preview img{
+
+    width:120px;
+
+    height:100px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+}
+
+
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+
+.dashboard{
+
+    flex-direction:column;
+
+}
+
+
+
+.sidebar{
+
+    width:100%;
+
+}
+
+
+
+.content{
+
+    padding:20px;
+
+}
+
+
+
+}
