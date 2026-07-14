@@ -11,7 +11,9 @@
   },
   "hall": {
     "name": "Hall",
-    "images": []
+    "images": [
+      "imgs/hall/1784038811106-about-mobile.png"
+    ]
   },
   "aluminum": {
     "name": "Aluminum",
