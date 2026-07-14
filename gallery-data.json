@@ -1,7 +1,9 @@
 {
   "kitchen": {
     "name": "Kitchen",
-    "images": []
+    "images": [
+      "imgs/kitchen/1784038456242-1.png"
+    ]
   },
   "bedroom": {
     "name": "Bedroom",
