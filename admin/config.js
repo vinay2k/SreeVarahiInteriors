@@ -19,11 +19,11 @@ const CONFIG = {
     },
 
 
-    // File stored in repository root
+    // gallery-data.json location in GitHub repo
     MANIFEST_PATH: "gallery-data.json",
 
 
-    // Image upload location
+    // Images upload folder
     IMAGE_FOLDER: "imgs"
 
 };
@@ -31,23 +31,18 @@ const CONFIG = {
 
 
 // =====================================
-// GET SAVED SETTINGS
+// GET GITHUB SETTINGS
 // =====================================
 
-function getSettings(){
+function getSettings() {
 
     return {
 
-        owner:
-        localStorage.getItem(CONFIG.KEYS.OWNER) || "",
+        owner: localStorage.getItem(CONFIG.KEYS.OWNER) || "",
 
+        repo: localStorage.getItem(CONFIG.KEYS.REPO) || "",
 
-        repo:
-        localStorage.getItem(CONFIG.KEYS.REPO) || "",
-
-
-        branch:
-        localStorage.getItem(CONFIG.KEYS.BRANCH) || "main"
+        branch: localStorage.getItem(CONFIG.KEYS.BRANCH) || "main"
 
     };
 
@@ -59,7 +54,7 @@ function getSettings(){
 // SAVE GITHUB SETTINGS
 // =====================================
 
-function saveSettings(owner, repo, branch){
+function saveSettings(owner, repo, branch) {
 
 
     localStorage.setItem(
@@ -84,12 +79,11 @@ function saveSettings(owner, repo, branch){
 
 
 // =====================================
-// TOKEN HANDLING
-// Stored only while browser tab is open
+// GITHUB TOKEN
+// Stored only for current browser session
 // =====================================
 
-
-function getToken(){
+function getToken() {
 
     return sessionStorage.getItem(
         CONFIG.KEYS.TOKEN
@@ -99,7 +93,7 @@ function getToken(){
 
 
 
-function setToken(token){
+function setToken(token) {
 
     sessionStorage.setItem(
         CONFIG.KEYS.TOKEN,
@@ -110,7 +104,7 @@ function setToken(token){
 
 
 
-function clearToken(){
+function clearToken() {
 
     sessionStorage.removeItem(
         CONFIG.KEYS.TOKEN
@@ -121,18 +115,23 @@ function clearToken(){
 
 
 // =====================================
-// CHECK CONNECTION
+// CHECK GITHUB CONNECTION
 // =====================================
 
-function isConfigured(){
+function isConfigured() {
+
 
     const settings = getSettings();
 
 
-    return (
+    return Boolean(
+
         settings.owner &&
+
         settings.repo &&
+
         getToken()
+
     );
 
 }
