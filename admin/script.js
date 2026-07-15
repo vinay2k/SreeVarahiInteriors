@@ -63,19 +63,32 @@ async function putJsonFile(path, data, sha, message){
     return res.json();
 }
 
-async function putImageFile(path, base64, message){
-    const {branch} = getSettings();
+async function putImageFile(path, base64, message){const {branch} = getSettings();
+
     const res = await fetch(apiUrl(path), {
         method: "PUT",
         headers: {
             ...authHeaders(),
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ message, content: base64, branch })
+        body: JSON.stringify({
+            message,
+            content: base64,
+            branch
+        })
     });
-    if(!res.ok) throw new Error("Image upload failed");
-    return res.json();
-}
+
+    if(!res.ok){
+
+        const error = await res.json();
+
+        alert(JSON.stringify(error, null, 2));
+
+        throw new Error(error.message);
+
+    }
+
+    return res.json();}
 
 function setSettingsToUI(){
     const settings = getSettings();
