@@ -1,6 +1,6 @@
 // ============================
-// GALLERY LOADER
-// Automatically loads images from gallery-data.json
+// GALLERY LOADER (GitHub API)
+// Automatically loads all images from GitHub folder
 // ============================
 
 (async function () {
@@ -11,13 +11,9 @@
 
     const projectKey = container.dataset.project;
 
-    if (!projectKey) {
-        console.warn("Missing data-project attribute.");
-        return;
-    }
+    if (!projectKey) return;
 
-    const url =
-        `https://raw.githubusercontent.com/${SITE_CONFIG.owner}/${SITE_CONFIG.repo}/${SITE_CONFIG.branch}/gallery-data.json?t=${Date.now()}`;
+    const url = `https://api.github.com/repos/${SITE_CONFIG.owner}/${SITE_CONFIG.repo}/contents/imgs/${projectKey}?ref=${SITE_CONFIG.branch}`;
 
     try {
 
@@ -26,28 +22,26 @@
         if (!response.ok)
             throw new Error("Unable to load gallery.");
 
-        const data = await response.json();
-
-        const project = data[projectKey];
-
-        if (!project) {
-            container.innerHTML = "<p>No project found.</p>";
-            return;
-        }
+        const files = await response.json();
 
         container.innerHTML = "";
 
-        project.images.forEach((imagePath, index) => {
+        files
+            .filter(file =>
+                file.type === "file" &&
+                /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)
+            )
+            .forEach((file, index) => {
 
-            const img = document.createElement("img");
+                const img = document.createElement("img");
 
-            img.src = "../" + imagePath;
+                img.src = file.download_url;
 
-            img.alt = `${project.name} ${index + 1}`;
+                img.alt = `${projectKey} ${index + 1}`;
 
-            container.appendChild(img);
+                container.appendChild(img);
 
-        });
+            });
 
         initPopup(container);
 
@@ -89,22 +83,13 @@ function initPopup(gallery) {
 
         const imgs = images();
 
-        popupImg.classList.add("fade-out");
-
-        setTimeout(() => {
-
-            popupImg.src = imgs[index].src;
-
-            popupImg.classList.remove("fade-out");
-
-        }, 200);
+        popupImg.src = imgs[index].src;
 
     }
 
     gallery.addEventListener("click", function (e) {
 
-        if (e.target.tagName !== "IMG")
-            return;
+        if (e.target.tagName !== "IMG") return;
 
         const imgs = [...images()];
 
@@ -147,8 +132,7 @@ function initPopup(gallery) {
 
     document.addEventListener("keydown", function (e) {
 
-        if (!popup.classList.contains("active"))
-            return;
+        if (!popup.classList.contains("active")) return;
 
         if (e.key === "Escape")
             popup.classList.remove("active");
