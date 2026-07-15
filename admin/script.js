@@ -63,7 +63,9 @@ async function putJsonFile(path, data, sha, message){
     return res.json();
 }
 
-async function putImageFile(path, base64, message){const {branch} = getSettings();
+async function putImageFile(path, base64, message){
+
+    const {branch} = getSettings();
 
     const res = await fetch(apiUrl(path), {
         method: "PUT",
@@ -78,16 +80,21 @@ async function putImageFile(path, base64, message){const {branch} = getSettings(
         })
     });
 
+    const result = await res.json();
+
     if(!res.ok){
 
-        const error = await res.json();
+        console.log(result);
 
-        alert(JSON.stringify(error, null, 2));
+        alert(JSON.stringify(result, null, 2));
 
-        throw new Error(error.message);
+        throw new Error(result.message || "Upload failed");
 
     }
 
+    return result;
+
+}
     return res.json();}
 
 function setSettingsToUI(){
