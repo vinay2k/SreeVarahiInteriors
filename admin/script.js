@@ -1,4 +1,4 @@
-﻿const GITHUB_API = "https://api.github.com";
+const GITHUB_API = "https://api.github.com";
 
 function apiUrl(path){
     const {owner, repo} = getSettings();
@@ -16,9 +16,62 @@ function fileToBase64(file){
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result.split(",")[1]);
-        reader.onerror = reject;
+        reader.onerror = () => reject(new Error("Unable to read selected image"));
         reader.readAsDataURL(file);
     });
+}
+
+function loadImage(file){
+    return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve(img);
+        };
+        img.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error("Unable to read image"));
+        };
+        img.src = url;
+    });
+}
+
+async function compressImage(file){
+    if(!file || !file.type || !file.type.startsWith("image/")){
+        return fileToBase64(file);
+    }
+
+    try {
+        const img = await loadImage(file);
+        const maxDimension = 1280;
+        const scale = Math.min(1, maxDimension / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        const quality = file.size > 2 * 1024 * 1024 ? 0.75 : 0.85;
+        const blob = await new Promise((resolve, reject) => {
+            canvas.toBlob((result) => {
+                if(result){
+                    resolve(result);
+                } else {
+                    reject(new Error("Image compression failed"));
+                }
+            }, "image/jpeg", quality);
+        });
+
+        if(blob && blob.size < file.size){
+            return fileToBase64(blob);
+        }
+    } catch (error) {
+        console.warn("Compression failed, using original image", error);
+    }
+
+    return fileToBase64(file);
 }
 
 function sanitizeFilename(name){
@@ -64,38 +117,21 @@ async function putJsonFile(path, data, sha, message){
 }
 
 async function putImageFile(path, base64, message){
-
     const {branch} = getSettings();
-
     const res = await fetch(apiUrl(path), {
         method: "PUT",
         headers: {
             ...authHeaders(),
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            message,
-            content: base64,
-            branch
-        })
+        body: JSON.stringify({ message, content: base64, branch })
     });
-
-    const result = await res.json();
-
     if(!res.ok){
-
-        console.log(result);
-
-        alert(JSON.stringify(result, null, 2));
-
-        throw new Error(result.message || "Upload failed");
-
+        const errorText = await res.text();
+        throw new Error(`Image upload failed (${res.status} ${res.statusText})`);
     }
-
-    return result;
-
+    return res.json();
 }
-    return res.json();}
 
 function setSettingsToUI(){
     const settings = getSettings();
@@ -182,8 +218,9 @@ async function uploadImages(e){
         }
         const uploaded = [];
         for(const file of files){
-            const base64 = await fileToBase64(file);
-            const filename = Date.now() + "-" + sanitizeFilename(file.name);
+            const base64 = await compressImage(file);
+            const safeName = sanitizeFilename(file.name.replace(/\.[^.]+$/, ""));
+            const filename = `${Date.now()}-${Math.round(Math.random() * 100000)}-${safeName}.jpg`;
             const path = `${CONFIG.IMAGE_FOLDER}/${project}/${filename}`;
             await putImageFile(path, base64, "Upload gallery image");
             uploaded.push(path);
